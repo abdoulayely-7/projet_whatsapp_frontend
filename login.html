@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion</title>
+  <link href="/src/index.css" rel="stylesheet" />
+</head>
+<body class="bg-body text-white flex items-center justify-center h-screen  w-full">
+  <div class="bg-[#1E1E1E] p-8 rounded-lg shadow-lg w-96">
+    <h1 class="text-2xl font-bold mb-6 text-center">Connexion</h1>
+    <form id="login-form" class="space-y-4">
+      <input type="tel" id="telephone" placeholder="Numéro de téléphone" class="w-full p-3 rounded bg-[#2E2F2F] text-white">
+      <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded">Se connecter</button>
+    </form>
+    <p id="error-message" class="text-red-500 mt-4 hidden">Numéro invalide</p>
+  </div>
+
+  <script type="module" src="/src/login.js"></script>
+</body>
+</html>
