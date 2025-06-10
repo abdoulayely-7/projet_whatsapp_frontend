@@ -11,11 +11,13 @@ const liste = document.getElementById('liste-contacts');
 const iconStatut = document.querySelector('#icon-statut')
 let contactActif = null
 
-const connectedUserId = localStorage.getItem('connectedUserId');
+const connectedUser = localStorage.getItem('connectedUser');
 
-if (!connectedUserId) {
+if (!connectedUser) {
   window.location.href = '/login.html';
 }
+
+console.log(connectedUser);
 
 
 
