@@ -2,53 +2,25 @@ import { BASE_URL } from './environnement.js';
 
 const form = document.getElementById('login-form');
 const errorMessage = document.getElementById('error-message');
-const tel = document.getElementById('telephone');
-
-
-function estNumeroValide(telephone) {
-  return /^\d+$/.test(telephone);
-}
-// function ValidationTelephone() {
-
-
-//     tel.addEventListener("input", () => {
-//         const valeur = tel.value.trim();
-
-//         if (!estNumeroValide(valeur)) {
-//             tel.classList.add("border-red-500");
-//             errorMessage.textContent = "Seuls les chiffres sont autorisés.";
-//         } else {
-//             tel.classList.remove("border-red-500");
-//             errorMessage.textContent = "";
-//         }
-//     });
-// }
-
-// ValidationTelephone()
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const  numero = tel.value;
-  if (tel.value == '') {
-    errorMessage.textContent = "Veuillez saisir un numéro"
-    return
-  }
+  const tel = document.getElementById('telephone').value;
 
   try {
-    console.log('ok ');
-
-    const res = await fetch(`${BASE_URL}/contacts?telephone=${numero}`);
+    const res = await fetch(`${BASE_URL}/contacts?telephone=${tel}`);
     const data = await res.json();
+
     if (data.length === 1) {
-
-
-      localStorage.setItem('connectedUser', JSON.stringify(data[0]));
+      localStorage.setItem('connectedUserId',JSON.stringify( data[0]));
       window.location.href = '/';
+      console.log(data);
+      
     } else {
       errorMessage.classList.remove('hidden');
-      errorMessage.textContent = "Numéro incorrecte"
     }
   } catch (err) {
     errorMessage.textContent = "Erreur serveur.";
+    errorMessage.classList.remove('hidden');
   }
 });
