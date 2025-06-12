@@ -1,15 +1,15 @@
 import { getConnectedUser } from "./store/userStore";
-import { renderLogin } from "./views/loginView";
-export function router()
-{
+import { showLogin } from "./controllers/loginController";
+import { showHome } from "./views/homeView";
+
+export function router() {
   const app = document.querySelector("#app")
-  app.innerHTML=''
+  app.innerHTML = ''
   const user = getConnectedUser()
-  if (!user)
-  {
-    renderLogin(app)
+  if (!user) {
+    showLogin(app)
   }
-  else{
-    renderHome(app,user)
+  else {
+    showHome(app,user)
   }
 }
