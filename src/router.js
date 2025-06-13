@@ -6,6 +6,7 @@ export function router() {
   const app = document.querySelector("#app")
   app.innerHTML = ''
   const user = getConnectedUser()
+  
   if (!user) {
     showLogin(app)
   }

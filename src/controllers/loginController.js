@@ -1,5 +1,5 @@
 import { findUserByPhone } from '../services/api.js';
-import { setConnectedUser } from '../store/userStore.js';
+import { getConnectedUser, setConnectedUser } from '../store/userStore.js';
 import { router } from '../router.js';
 import { renderLogin } from '../views/loginView.js';
 
@@ -46,6 +46,7 @@ export function showLogin(app) {
 
       if (data.length === 1) {
         setConnectedUser(data[0].id);
+        
         router();
       } else {
         erreurMessage.textContent = "Aucun utilisateur trouvé avec ce numéro.";

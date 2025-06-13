@@ -3,7 +3,7 @@ let connectedUser = null
 export function setConnectedUser(user)
 {
   connectedUser = user
-  localStorage.setItem('connectedUser',user.id)
+  localStorage.setItem('connectedUser',user)
 }
 export function getConnectedUser()
 {
