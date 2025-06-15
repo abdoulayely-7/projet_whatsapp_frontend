@@ -1,4 +1,5 @@
 import { BASE_URL } from "../environnement";
+import { getConnectedUser } from "../store/userStore";
 
 export async function findUserByPhone(telephone)
 {
@@ -20,3 +21,4 @@ const res = await fetch(`${BASE_URL}/utilisateurs`)
   if (!res.ok) throw new Error("Erreur de server");
     return res.json()
 } 
+

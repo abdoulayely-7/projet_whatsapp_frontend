@@ -44,50 +44,8 @@ export function renderSection() {
   return section
 }
 
-export function contactElement(contact) {
-    const li = document.createElement('li');
 
-    li.className = 'contact-click flex items-center gap-3 cursor-pointer hover:bg-[#242626] p-2 rounded'
 
-      li.innerHTML = `
-        <img src="https://i.pravatar.cc/40?u=${contact.id}" alt="avatar" class="w-14 h-14 rounded-full" />
-        <div class="flex flex-col flex-1">
-          <span class="font-medium">${contact.nom}</span>
-          <span class="font-sm">${contact.dernierMessage || 'Aucun message'}</span>
-        </div>
-        <div class="ml-auto">
-          <p class="text-xm text-gray-400">${contact.heure || ''}</p>
-          <span class="bg-green-500 ml-3 text-gray-900 text-[15px] font-bold px-2 py-0.5 rounded-full">
-            ${contact.nonLus || ''}
-          </span>
-        </div>
-      `;
-    return li;
-}
 
-// <!-- <li class="contact-click flex items-center gap-3 cursor-pointer hover:bg-[#242626] p-2 rounded">
-//           <img src="https://i.pravatar.cc/40?u=2" alt="avatar" class="w-14 h-14 rounded-full" />
-//           <div class="flex flex-col flex-1">
-//             <span class="font-medium">Bob</span>
-//             <span class="font-sm">Bonjour</span>
-//           </div>
-//           <div class="ml-auto">
-//             <p class="text-xm text-gray-400">22:13</p>
-//             <span class="bg-green-500 ml-3 text-gray-900 text-[15px] font-bold px-2 py-0.5 rounded-full">
-//               3
-//             </span>
-//           </div>
-//         </li> -->
 
-export function activerContact(li, contact) {
-    li.addEventListener("click", () => {
-        document.querySelectorAll(".contact-click").forEach(el => {
-            el.classList.remove("bg-[#242626]");
-        });
-        li.classList.add("bg-[#242626]");
-        const svgAccueil = document.querySelector("#svg-accueil")        
-        const discussion = document.querySelector("#discussion")
-        if (svgAccueil) svgAccueil.classList.add("hidden");
-        if (discussion) discussion.classList.remove("hidden");
-    });
-}
+

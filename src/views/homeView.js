@@ -1,7 +1,6 @@
 import { renderAside } from "../components/aside";
 import { renderSection } from "../components/section";
 import { renderMain } from "../components/maine";
-import { loadContacts } from "../services/contact";
 import { afficherContact } from "../controllers/ContactController";
 export function showHome(app) {
   app.innerHTML = '';
@@ -11,7 +10,6 @@ export function showHome(app) {
   app.appendChild(aside)
   app.appendChild(section)
   app.appendChild(main)
-  // loadContacts()
 
   afficherContact()
 
