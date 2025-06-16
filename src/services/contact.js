@@ -93,7 +93,7 @@ export async function fetchSendMessages(message) {
 export async function markMessageAsRead(id) {
   try {
     await fetch(`${BASE_URL}/messages?${id}`, {
-      method: 'PATH',
+      method: 'PATCH',
       headers: { "content-Type": "application/json" },
       body: JSON.stringify({ lu: true })
     })
