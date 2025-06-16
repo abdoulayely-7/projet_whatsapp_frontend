@@ -1,4 +1,4 @@
-import { getMessages, loadContacts } from "../services/contact";
+import { fetchSendMessages, getMessages, loadContacts, markMessageAsRead } from "../services/contact";
 import { renderSection } from "../components/section";
 import { genererFormulaire, genererHeader, genererZoneMessages } from "../components/pageDiscussion";
 import { getConnectedUser } from "../store/userStore";
@@ -55,18 +55,19 @@ export async function afficherContact() {
 }
 
 
-
 export async function afficherMessages(contact) {
   const messagesContainer = document.getElementById('discussion-messages');
   messagesContainer.innerHTML = "";
 
-  const connectedUserId = getConnectedUser()
-
-  const conversation = await getMessages(contact)
+  const connectedUserId = getConnectedUser();
+  const conversation = await getMessages(contact);
 
   conversation.forEach(message => {
     const isSent = message.auteur === connectedUserId;
-
+    if (!isSent && !message.lu) {
+      markMessageAsRead(message.id)
+      message.lu = true
+    }
     const messageHTML = isSent
       ? `
       <div class="bg-[#144D37] p-2 text-white max-w-xs self-end rounded-tl-2xl rounded-tr-none rounded-bl-2xl rounded-br-2xl">
@@ -89,7 +90,52 @@ export async function afficherMessages(contact) {
   });
 }
 
-export function afficherPageDiscussion(contact) {
+export function EnvoyerMessage(contact) {
+  const form = document.querySelector("#form-message");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = document.querySelector("#message-input");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const contactId = String(contact.id);
+    const connectedUserId = String(getConnectedUser());
+
+    const newMessage = {
+      texte: msg,
+      auteur: connectedUserId,
+      destinataire: contactId,
+      heure: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      envoye: true,
+      lu: false
+    };
+
+    await fetchSendMessages(newMessage);
+    input.value = '';
+
+    const messagesContainer = document.querySelector('#discussion-messages');
+    const messageHTML = `
+      <div class="bg-[#144D37] p-2 text-white max-w-xs self-end rounded-tl-2xl rounded-tr-none rounded-bl-2xl rounded-br-2xl">
+        <div class="flex justify-between items-end gap-3">
+          <p>${newMessage.texte}</p>
+          <span class="text-xs text-gray-300 whitespace-nowrap">${newMessage.heure}</span>
+          <i data-lucide="check-check" class="w-3 h-3 -ml-2"></i>
+        </div>
+      </div>
+    `;
+
+    messagesContainer.insertAdjacentHTML("beforeend", messageHTML);
+
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    createIcons({ icons });
+  });
+}
+
+
+
+export async function afficherPageDiscussion(contact) {
   const discussion = document.getElementById("discussion");
   discussion.innerHTML = `
         ${genererHeader(contact)}
@@ -98,8 +144,9 @@ export function afficherPageDiscussion(contact) {
     `;
   // initialiserBoutonsDiscussion(contact);
   // sauvegarderBrouillon(contact);
-  afficherMessages(contact);
-  // EnvoyerMessage(contact);
+  await afficherMessages(contact);
+createIcons({ icons });
+  EnvoyerMessage(contact);
 
 
   createIcons({ icons });

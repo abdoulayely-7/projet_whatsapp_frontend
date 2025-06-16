@@ -1,3 +1,4 @@
+import { Input } from 'postcss';
 import { BASE_URL } from '../environnement.js'
 import { getConnectedUser } from '../store/userStore.js';
 import { findUserById, getUsers } from './api.js';
@@ -29,46 +30,75 @@ export async function loadContacts() {
   }
 }
 
-// export async function getMessages(contact) {
-//   try {
-//       const res = await fetch(`${BASE_URL}/messages`)
-//       if (!res.ok) throw new Error("Erreur server");
-//       const messages = await  res.json()
+export async function getMessages(contact) {
+  try {
+    const res = await fetch(`${BASE_URL}/messages`)
+    if (!res.ok) throw new Error("Erreur server");
+    const messages = await res.json()
 
-//       const conversation = messages.filter(m =>
-//         (m.auteur === getConnectedUser() && m.destinataire === contact.id) ||
-//         (m.auteur === contact.id && m.destinataire === getConnectedUser())
-//       )
-//       return conversation
+    const conversation = messages.filter(m =>
+      (m.auteur === getConnectedUser() && m.destinataire === contact.id) ||
+      (m.auteur === contact.id && m.destinataire === getConnectedUser())
+    )
+    return conversation
+  } catch (error) {
+    console.log("Erreur lors de la récuperation des messages: ", error);
+    return []
+  }
+}
+
+// export async function getMessages(contact) {
+//   const contactId = String(contact.id)
+//   const connectedUserId = String(getConnectedUser());
+
+//   try {
+//     const [sendRes, receiveRes] = await Promise.all([
+//       fetch(`${BASE_URL}/messages?auteur=${connectedUserId}&destinataire=${contactId}`),
+//       fetch(`${BASE_URL}/messages?auteur=${contactId}&destinataire=${connectedUserId}`)
+//     ])
+
+//     if (!sendRes.ok || !receiveRes.ok) throw new Error("Erreur lors de la récupération du json ");
+
+//     const [send, receive] = await Promise.all([
+//       sendRes.json(),
+//       receiveRes.json()
+//     ])
+
+//     const conversation = [...send, ...receive].sort((a, b) => a.id - b.id)
+
+//     return conversation
+
 //   } catch (error) {
-//     console.log("Erreur lors de la récuperation des messages: ",error);
-//     return []
+//     console.error("Erreur dans getMessages:", error);
+//     return [];
 //   }
 // }
 
-export async function getMessages(contact) {
-  const contactId = String(contact.id)
-  const connectedUserId = String(getConnectedUser());
+export async function fetchSendMessages(message) {
 
   try {
-    const [sendRes, receiveRes] = await Promise.all([
-      fetch(`${BASE_URL}/messages?auteur=${connectedUserId}&destinataire=${contactId}`),
-      fetch(`${BASE_URL}/messages?auteur=${contactId}&destinataire=${connectedUserId}`)
-    ])
-
-    if (!sendRes.ok || !receiveRes.ok) throw new Error("Erreur lors de la récupération du json ");
-
-    const [send, receive] = await Promise.all([
-      sendRes.json(),
-      receiveRes.json()
-    ])
-
-    const conversation = [...send, ...receive].sort((a, b) => a.id - b.id)
-
-    return conversation
+    const res = await fetch(`${BASE_URL}/messages`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(message)
+    });
+    if (!res.ok) throw new Error("Erreur lors de l envoie du message");
 
   } catch (error) {
-    console.error("Erreur dans getMessages:", error);
-    return [];
+    console.error("Erreur message:", err);
+    alert("Erreur lors de l'envoi.")
+  }
+}
+
+export async function markMessageAsRead(id) {
+  try {
+    await fetch(`${BASE_URL}/messages?${id}`, {
+      method: 'PATH',
+      headers: { "content-Type": "application/json" },
+      body: JSON.stringify({ lu: true })
+    })
+
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du message comme lu:", error);
   }
 }
