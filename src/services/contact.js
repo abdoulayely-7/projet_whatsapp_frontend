@@ -92,7 +92,7 @@ export async function fetchSendMessages(message) {
 
 export async function markMessageAsRead(id) {
   try {
-    await fetch(`${BASE_URL}/messages?${id}`, {
+    await fetch(`${BASE_URL}/messages/${id}`, {
       method: 'PATCH',
       headers: { "content-Type": "application/json" },
       body: JSON.stringify({ lu: true })
@@ -100,5 +100,19 @@ export async function markMessageAsRead(id) {
 
   } catch (error) {
     console.error("Erreur lors de la mise à jour du message comme lu:", error);
+  }
+}
+
+export async function addLastMsgToUser(id,msg)
+{
+  try {
+    await fetch(`${BASE_URL}/utilisateurs/${id}`,{
+      method : 'PATCH',
+      headers : {"content6Type": "application-json"},
+      body : JSON.stringify({dernierMessage : msg})
+    })
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l utilisateur :", error);
+    
   }
 }

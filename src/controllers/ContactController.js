@@ -1,19 +1,22 @@
-import { fetchSendMessages, getMessages, loadContacts, markMessageAsRead } from "../services/contact";
+import { addLastMsgToUser, fetchSendMessages, getMessages, loadContacts, markMessageAsRead } from "../services/contact";
 import { renderSection } from "../components/section";
 import { genererFormulaire, genererHeader, genererZoneMessages } from "../components/pageDiscussion";
 import { getConnectedUser } from "../store/userStore";
 import { createIcons, icons } from 'lucide'
+import { findUserById } from "../services/api";
+import { data } from "autoprefixer";
 
 export function contactElement(contact) {
   const li = document.createElement('li');
 
   li.className = 'contact-click flex items-center gap-3 cursor-pointer hover:bg-[#242626] p-2 rounded'
-
+  li.setAttribute("data",contact.id)
+  
   li.innerHTML = `
         <img src="https://i.pravatar.cc/40?u=${contact.id}" alt="avatar" class="w-14 h-14 rounded-full" />
         <div class="flex flex-col flex-1">
           <span class="font-medium">${contact.nom}</span>
-          <span class="font-sm">${contact.dernierMessage || 'Aucun message'}</span>
+          <span class=".dernier-message font-sm">${contact.dernierMessage || 'Aucun message'}</span>
         </div>
         <div class="ml-auto">
 
@@ -41,9 +44,8 @@ export function activerContact(li, contact) {
 }
 
 export async function afficherContact() {
-  const sectionContact = renderSection()
   const liste = document.querySelector("#liste-contacts")
-
+  liste.innerHTML=''
   const contacts = await loadContacts()
 
   contacts.forEach(contact => {
@@ -63,10 +65,10 @@ export async function afficherMessages(contact) {
   const conversation = await getMessages(contact);
 
   conversation.forEach(message => {
+
     const isSent = message.auteur === connectedUserId;
-    if (!isSent && !message.lu) {
+    if (!message.lu) {
       markMessageAsRead(message.id)
-      message.lu = true
     }
     const messageHTML = isSent
       ? `
@@ -87,6 +89,8 @@ export async function afficherMessages(contact) {
       `;
 
     messagesContainer.insertAdjacentHTML("beforeend", messageHTML);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
   });
 }
 
@@ -101,6 +105,15 @@ export function EnvoyerMessage(contact) {
 
     const contactId = String(contact.id);
     const connectedUserId = String(getConnectedUser());
+    
+
+    await addLastMsgToUser(contactId, msg)
+    const li = document.querySelector(`li[data-id="${contactId}"]`);
+    if (li) {
+      const lastMsgEl = li.querySelector(".dernier-message");
+      lastMsgEl.textContent = msg;
+    }
+
 
     const newMessage = {
       texte: msg,
@@ -144,8 +157,11 @@ export async function afficherPageDiscussion(contact) {
     `;
   // initialiserBoutonsDiscussion(contact);
   // sauvegarderBrouillon(contact);
-  await afficherMessages(contact);
-createIcons({ icons });
+  //  setInterval(() => {
+  afficherMessages(contact);
+  // }, 3000); 
+
+  createIcons({ icons });
   EnvoyerMessage(contact);
 
 
