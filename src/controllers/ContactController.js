@@ -98,10 +98,22 @@ export async function afficherMessages(contact) {
 
 export function EnvoyerMessage(contact) {
   const form = document.querySelector("#form-message");
+  const input = document.querySelector("#message-input");
+  const emojiContainer = document.querySelector("#emoji-container");
+  const emojiPicker = emojiContainer.querySelector("emoji-picker");
+
+  form.addEventListener("click", (e) => {
+    if (e.target.closest("#emoji-icon")) emojiContainer.classList.toggle("hidden")
+  })
+
+  emojiPicker.addEventListener("emoji-click",(e)=>{
+    input.value += e.detail.unicode
+    input.focus()
+  })
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const input = document.querySelector("#message-input");
+    emojiContainer.classList.toggle("hidden")
     const msg = input.value.trim();
     if (!msg) return;
 
@@ -240,7 +252,7 @@ function addContact(form) {
       await fetchAddContacToConnectedUser(connectedUserId, contactCree.id)
       alert("fait")
       viderChamps()
-    }else {
+    } else {
       alert("Erreur : impossible d'ajouter le contact.");
     }
 

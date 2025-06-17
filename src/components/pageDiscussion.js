@@ -1,5 +1,7 @@
 import { getConnectedUser } from '../store/userStore';
 import { getMessages } from '../services/contactApi';
+import 'emoji-picker-element';
+
 
 export function genererHeader(contact) {
     return `
@@ -29,16 +31,19 @@ export function genererFormulaire() {
     return `
         <div class="w-full relative">
             <form action="" id="form-message">
-                <i data-lucide="plus" class="absolute left-4 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
+                <i  data-lucide="plus" class="absolute left-4 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
 
-                <i data-lucide="smile" class="absolute left-10 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
+                <i id='emoji-icon' data-lucide="smile" class="absolute left-12 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
 
                 <input id="message-input" type="text" autocomplete="off" placeholder="Entrer un message"
                     class="w-full pl-20 pr-12 py-3 rounded-full bg-[#242626] text-white placeholder:text-white focus:outline-none" />
 
                 <i data-lucide="mic" class="absolute right-4 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
-        
+            
             </form>
+            <div id="emoji-container" class="absolute bottom-14 left-10 z-50 hidden">
+                    <emoji-picker></emoji-picker>
+            </div>
         </div>
     `;
 }
