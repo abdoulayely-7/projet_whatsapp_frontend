@@ -1,5 +1,5 @@
 import { getConnectedUser } from '../store/userStore';
-import { getMessages } from '../services/contact';
+import { getMessages } from '../services/contactApi';
 
 export function genererHeader(contact) {
     return `
@@ -33,7 +33,7 @@ export function genererFormulaire() {
 
                 <i data-lucide="smile" class="absolute left-10 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
 
-                <input id="message-input" type="text" placeholder="Entrer un message"
+                <input id="message-input" type="text" autocomplete="off" placeholder="Entrer un message"
                     class="w-full pl-20 pr-12 py-3 rounded-full bg-[#242626] text-white placeholder:text-white focus:outline-none" />
 
                 <i data-lucide="mic" class="absolute right-4 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>

@@ -1,11 +1,12 @@
 export function renderSection() {
   const section = document.createElement("section")
   section.className = 'flex flex-col w-[30%] bg-section p-4 border-2 border-color rounded-tl-lg h-full'
+  section.id = "main-section";
   section.innerHTML = `
     <div class="flex justify-between">
         <h2 class="text-2xl font-bold mb-4">WhatsApp</h2>
         <div class="flex gap-10 mr-5">
-          <i data-lucide="message-square-diff" class="text-xl mt-1 hover:text-white cursor-pointer"
+          <i data-lucide="message-square-diff" id="btn-add" class="text-xl mt-1 hover:text-white cursor-pointer"
             style="transform: rotateX(180deg)"></i>
           <i class="fas fa-ellipsis-v text-2xl hover:text-white cursor-pointer"></i>
         </div>

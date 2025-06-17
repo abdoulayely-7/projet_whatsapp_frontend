@@ -103,16 +103,40 @@ export async function markMessageAsRead(id) {
   }
 }
 
-export async function addLastMsgToUser(id,msg)
-{
+export async function addLastMsgToUser(id, msg) {
   try {
-    await fetch(`${BASE_URL}/utilisateurs/${id}`,{
-      method : 'PATCH',
-      headers : {"content6Type": "application-json"},
-      body : JSON.stringify({dernierMessage : msg})
+    await fetch(`${BASE_URL}/utilisateurs/${id}`, {
+      method: 'PATCH',
+      headers: { "content6Type": "application-json" },
+      body: JSON.stringify({ dernierMessage: msg })
     })
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l utilisateur :", error);
-    
+
+  }
+}
+export async function fetchAddContact(contact) {
+  try {
+    const res = await fetch(`${BASE_URL}/utilisateurs`, {
+      method: 'POST',
+      headers: { "content-Type": "application/json" },
+      body: JSON.stringify(contact)
+    })
+    return await res.json()
+  } catch (error) {
+    console.error("Erreur lors de l ajout du contact : ", error);
+
+  }
+}
+
+export async function fetchAddContacToConnectedUser(connectedUserId, contactId) {
+  try {
+    await fetch(`${BASE_URL}/utilisateurs/${connectedUserId}`,{
+      method : 'PATCH',
+      headers : {"content-Type" : "application/json"},
+      body:JSON.stringify({contact : contactId})
+    })
+  } catch (error) {
+    console.error("Erreur lors de l ajout de l id du nouveau  contact : ", error);
   }
 }

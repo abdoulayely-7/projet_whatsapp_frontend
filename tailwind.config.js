@@ -13,9 +13,12 @@ export default {
         'main' : '#161717',
         'body' : '#1D1F1F',
         'section' : '#161717',
+        'annuler' : '#daa520',
+
       },
       borderColor:{
-        'color':'#343636'
+        'color':'#343636',
+        'vert': '#374151'
       }
     },
   },

@@ -1,17 +1,19 @@
-import { addLastMsgToUser, fetchSendMessages, getMessages, loadContacts, markMessageAsRead } from "../services/contact";
+import { addLastMsgToUser, fetchAddContact, fetchAddContacToConnectedUser, fetchSendMessages, getMessages, loadContacts, markMessageAsRead } from "../services/contactApi";
 import { renderSection } from "../components/section";
 import { genererFormulaire, genererHeader, genererZoneMessages } from "../components/pageDiscussion";
 import { getConnectedUser } from "../store/userStore";
 import { createIcons, icons } from 'lucide'
 import { findUserById } from "../services/api";
 import { data } from "autoprefixer";
+import { renderBtnAdd } from "../components/btnAdd";
+import { renderFormAddContact } from "../components/add.contact";
 
 export function contactElement(contact) {
   const li = document.createElement('li');
 
   li.className = 'contact-click flex items-center gap-3 cursor-pointer hover:bg-[#242626] p-2 rounded'
-  li.setAttribute("data",contact.id)
-  
+  li.setAttribute("data", contact.id)
+
   li.innerHTML = `
         <img src="https://i.pravatar.cc/40?u=${contact.id}" alt="avatar" class="w-14 h-14 rounded-full" />
         <div class="flex flex-col flex-1">
@@ -45,7 +47,7 @@ export function activerContact(li, contact) {
 
 export async function afficherContact() {
   const liste = document.querySelector("#liste-contacts")
-  liste.innerHTML=''
+  liste.innerHTML = ''
   const contacts = await loadContacts()
 
   contacts.forEach(contact => {
@@ -105,7 +107,6 @@ export function EnvoyerMessage(contact) {
 
     const contactId = String(contact.id);
     const connectedUserId = String(getConnectedUser());
-    
 
     await addLastMsgToUser(contactId, msg)
     const li = document.querySelector(`li[data-id="${contactId}"]`);
@@ -146,8 +147,6 @@ export function EnvoyerMessage(contact) {
   });
 }
 
-
-
 export async function afficherPageDiscussion(contact) {
   const discussion = document.getElementById("discussion");
   discussion.innerHTML = `
@@ -169,3 +168,91 @@ export async function afficherPageDiscussion(contact) {
 
 }
 
+export function showBtnClick(section) {
+  section.addEventListener("click", (e) => {
+    const iconCliquee = e.target.closest("#btn-add")
+    if (iconCliquee) {
+      const newSectionAddOption = renderBtnAdd();
+      const sideBar = renderFormAddContact()
+      const oldSection = document.querySelector("#main-section");
+      oldSection.replaceWith(newSectionAddOption);
+
+      createIcons({ icons });
+
+      newSectionAddOption.addEventListener("click", (e) => {
+        const iconAddContact = e.target.closest("#btn-add-contact")
+        const iconRetour = e.target.closest("#retour")
+        if (iconAddContact) {
+          newSectionAddOption.replaceWith(sideBar)
+          const inputNom = document.querySelector('#nom-contact')
+          inputNom.focus()
+          createIcons({ icons });
+          const form = document.querySelector("#form-ajout")
+          addContact(form)
+        }
+        else if (iconRetour) {
+          newSectionAddOption.replaceWith(oldSection)
+        }
+      })
+    }
+
+
+  });
+}
+
+function addContact(form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const inputNom = document.querySelector("#nom-contact");
+    const inputPrenom = document.querySelector("#prenom-contact");
+    const inputNumero = document.querySelector("#telephone-contact");
+
+    const nom = inputNom.value.trim();
+    const prenom = inputPrenom.value.trim();
+    const numero = inputNumero.value.trim();
+    const connectedUserId = String(getConnectedUser());
+
+    if (!nom || !prenom || !numero) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    const avatar = (prenom[0] + nom[0]).toUpperCase();
+
+    const nouveauContact = {
+      nom,
+      prenom,
+      telephone: numero,
+      dernierMessage: "",
+      brouillon: "",
+      noteVocale: true,
+      avatar,
+      contact: [connectedUserId],
+      archive: false
+    };
+
+    const contactCree = await fetchAddContact(nouveauContact);
+    console.log(contactCree);
+
+    if (contactCree?.id) {
+      console.log("ok");
+      await fetchAddContacToConnectedUser(connectedUserId, contactCree.id)
+      alert("fait")
+      viderChamps()
+    }else {
+      alert("Erreur : impossible d'ajouter le contact.");
+    }
+
+  });
+
+
+  function viderChamps(params) {
+    const inputNom = document.querySelector("#nom-contact")
+    const inputPrenom = document.querySelector("#prenom-contact")
+    const inputNumero = document.querySelector("#telephone-contact")
+    inputNom.value = ''
+    inputPrenom.value = ''
+    inputNumero.value = ''
+  }
+}
