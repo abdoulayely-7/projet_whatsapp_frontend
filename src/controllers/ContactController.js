@@ -105,7 +105,6 @@ export function EnvoyerMessage(contact) {
   form.addEventListener("click", (e) => {
     if (e.target.closest("#emoji-icon")) emojiContainer.classList.toggle("hidden")
   })
-
   emojiPicker.addEventListener("emoji-click",(e)=>{
     input.value += e.detail.unicode
     input.focus()
@@ -113,7 +112,7 @@ export function EnvoyerMessage(contact) {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    emojiContainer.classList.toggle("hidden")
+    emojiContainer.classList.add("hidden")
     const msg = input.value.trim();
     if (!msg) return;
 
@@ -146,7 +145,7 @@ export function EnvoyerMessage(contact) {
         <div class="flex justify-between items-end gap-3">
           <p>${newMessage.texte}</p>
           <span class="text-xs text-gray-300 whitespace-nowrap">${newMessage.heure}</span>
-          <i data-lucide="check-check" class="w-3 h-3 -ml-2"></i>
+          <i data-lucide="check" class="w-3 h-3 -ml-2"></i>
         </div>
       </div>
     `;
@@ -171,13 +170,8 @@ export async function afficherPageDiscussion(contact) {
   //  setInterval(() => {
   afficherMessages(contact);
   // }, 3000); 
-
-  createIcons({ icons });
   EnvoyerMessage(contact);
-
-
   createIcons({ icons });
-
 }
 
 export function showBtnClick(section) {
