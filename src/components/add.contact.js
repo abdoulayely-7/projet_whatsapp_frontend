@@ -1,7 +1,7 @@
 export function renderFormAddContact(params) {
   const div = document.createElement('div')
   div.className = 'flex flex-col w-[30%] bg-section p-7 border-2 border-vert rounded-tl-lg h-full min-h-screen'
-  div.id = 'sidebar-ajout"'
+  div.id = 'sidebar-ajout'
   div.innerHTML = `
       <div class="flex  items-center  mb-4 ">
         <button id='retour' class="mr-4 hover:bg-gray-700 p-2 rounded-full transition-colors">
@@ -38,7 +38,7 @@ export function renderFormAddContact(params) {
         </div>
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" id="btn-annuler" class=" bg-annuler text-white p-4 rounded  ">Annuler</button>
-          <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-700">Ajouter</button>
+          <button type="submit" id="btn-ajouter-contact" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-700">Ajouter</button>
         </div>
       </form>
     </div>

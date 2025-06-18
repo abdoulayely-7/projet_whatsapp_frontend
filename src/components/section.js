@@ -14,7 +14,7 @@ export function renderSection() {
 
       <div class="w-full relative">
         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        <input class="pl-14 p-3 w-full bg-[#2E2F2F] rounded-full placeholder:text-gray-400 focus:outline-none"
+        <input id='recherche' class="pl-14 p-3 w-full bg-[#2E2F2F] rounded-full placeholder:text-gray-400 focus:outline-none"
           type="text" placeholder="Rechercher ou commencer une discussion" />
       </div>
 

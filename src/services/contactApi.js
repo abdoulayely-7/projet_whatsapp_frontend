@@ -131,12 +131,20 @@ export async function fetchAddContact(contact) {
 
 export async function fetchAddContacToConnectedUser(connectedUserId, contactId) {
   try {
-    await fetch(`${BASE_URL}/utilisateurs/${connectedUserId}`,{
-      method : 'PATCH',
-      headers : {"content-Type" : "application/json"},
-      body:JSON.stringify({contact : contactId})
-    })
+    const res = await fetch(`${BASE_URL}/utilisateurs/${connectedUserId}`);
+    const utilisateur = await res.json();
+
+    const ancienContacts = utilisateur.contact || [];
+
+    const nouveauxContacts = [...new Set([...ancienContacts, contactId])]; 
+
+    await fetch(`${BASE_URL}/utilisateurs/${connectedUserId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contact: nouveauxContacts })
+    });
+
   } catch (error) {
-    console.error("Erreur lors de l ajout de l id du nouveau  contact : ", error);
+    console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
   }
 }

@@ -1,9 +1,9 @@
 import { afficherContact } from "../controllers/ContactController";
 
 export function renderBtnAdd() {
-  const div = document.createElement('div')
-  div.className = 'flex flex-col w-[30%] bg-section p-4 border-2 border-vert rounded-tl-lg h-full min-h-screen'
-  div.innerHTML = `
+    const div = document.createElement('div')
+    div.className = 'flex flex-col w-[30%] bg-section p-4 border-2 border-vert rounded-tl-lg h-full min-h-screen'
+    div.innerHTML = `
     <div class="flex items-center mb-6">
             <button id='retour' class="mr-4 hover:bg-gray-700 p-2 rounded-full transition-colors">
                 <i data-lucide="arrow-left" class="w-6 h-6"></i>
@@ -24,7 +24,7 @@ export function renderBtnAdd() {
         </div>
 
         <div class="space-y-4 mb-6">
-            <button class="flex items-center w-full p-3 hover:bg-gray-700 rounded-lg transition-colors">
+            <button id='btn-add-group' class="flex items-center w-full p-3 hover:bg-gray-700 rounded-lg transition-colors">
                 <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mr-4">
                     <i data-lucide="users" class="w-5 h-5 text-white"></i>
                 </div>
@@ -67,11 +67,11 @@ export function renderBtnAdd() {
             </div>
         </div>
     </div>
-  `
+    `
     setTimeout(() => {
     afficherContact()
-  });
+        });
 
 
-  return div
+    return div
 }

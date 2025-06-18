@@ -38,9 +38,12 @@ export function genererFormulaire() {
                 <input id="message-input" type="text" autocomplete="off" placeholder="Entrer un message"
                     class="w-full pl-20 pr-12 py-3 rounded-full bg-[#242626] text-white placeholder:text-white focus:outline-none" />
 
-                <i data-lucide="mic" class="absolute right-4 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
-            
+                <i id='micro' data-lucide="mic" class="absolute right-4 top-1/2 -translate-y-1/2 text-white cursor-pointer"></i>
+                <div id="recording-status" class="hidden text-white bg-green-600 px-3 py-1 rounded-full absolute bottom-14 right-4 z-50">
+                🎤 Enregistrement...
+                </div>
             </form>
+            
             <div id="emoji-container" class="absolute bottom-14 left-10 z-50 hidden">
                     <emoji-picker></emoji-picker>
             </div>
